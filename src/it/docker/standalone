@@ -25,10 +25,10 @@ function run {
 }
 
 function bounce_job {
-    run stop job
-    run build job
+    run stop kafka-connect
+    run build kafka-connect
 #    run rm -v -f job
-    run up -d job
+    run up -d kafka-connect
 }
 
 function docker_up {

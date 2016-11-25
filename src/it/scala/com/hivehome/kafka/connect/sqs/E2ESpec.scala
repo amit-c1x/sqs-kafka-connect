@@ -16,6 +16,7 @@ import scala.concurrent.Future
   * - Running kafka, zookeeper and schema registry
   * - SQS connector already running in kafka connect
   * - SQS queue named `test-sqs`
+  * - AWS key and secret in the environment to access SQS
   * - Kafka topic named `connect-test`
   *
   * Should this test move to the kafka-connect-deployment project?

@@ -8,7 +8,7 @@ services:
       SEED_ZOOKEEPER: zookeeper
 
   kafka:
-    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/kafka:0.9.0.0
+    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/kafka:0.10.0.1
     links:
       - zookeeper
     expose:
@@ -19,7 +19,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper
 
   schema_registry:
-    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/schema-registry:2.0
+    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/schema-registry:3.0
     links:
       - zookeeper
       - kafka
@@ -37,26 +37,13 @@ services:
         schema-registry-docker.sh
       '
 
-  job:
-    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/dp-heating-period-sample-job
+  kafka-connect:
+    image: sqs-connector
     links:
       - kafka
       - schema_registry
     expose:
-      - "7001"
-      - "7002"
-      - "7003"
-      - "7004"
-      - "7005"
-      - "7006"
-      - "8888" # Akka
+      - "8083"
     environment:
-      SPARK_MASTER: spark://sparkmaster:7077
       KAFKA: kafka:9092
       SCHEMA_REGISTRY: http://schema_registry:8081
-      CASSANDRA_HOST: cassandra
-      CASSANDRA_PORT: 9042
-      CASSANDRA_USER: ""
-      CASSANDRA_PASSWORD: ""
-      RM_CHECKPOINT: /var/spark/checkpoints/tmp
-      ENV: test
