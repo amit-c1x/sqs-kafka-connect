@@ -13,10 +13,9 @@ if [[ -z "$DOCKER_PROJECT" ]]; then
     export DOCKER_PROJECT=it
 fi
 
-export IMAGE_NAME=dp-heating-period-sample-job
+export IMAGE_NAME=sqs-kafka-connect-worker
 export COMPOSE_PROJECT_NAME=$DOCKER_PROJECT
 export COMPOSE_FILE=$DIR/docker-compose.yml
-export CHECKPOINT_DIR=/var/spark/checkpoints
 
 if [ "$(uname)" == "Darwin" ]; then
     export HOST_IP=$(route -n get default|grep interface|awk '{print $2}'|xargs ipconfig getifaddr)

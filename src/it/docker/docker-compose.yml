@@ -1,39 +1,5 @@
 version: "2"
 services:
-  spark_master:
-    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/dp-spark:1.6.1
-    expose:
-      - "7077" # Spark Master
-      - "7001"
-      - "7002"
-      - "7003"
-      - "7004"
-      - "7005"
-      - "7006"
-      - "8888" # Akka
-    entrypoint: ["/start-master"]
-    volumes:
-      - checkpointvolume:/var/spark/checkpoints
-
-  spark_worker:
-    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/dp-spark:1.6.1
-    depends_on:
-      - spark_master
-      - cassandra
-    expose:
-      - "7001"
-      - "7002"
-      - "7003"
-      - "7004"
-      - "7005"
-      - "7006"
-      - "8888" # Akka
-    environment:
-      SPARK_MASTER: spark_master
-    entrypoint: ["/start-worker"]
-    volumes:
-      - checkpointvolume:/var/spark/checkpoints
-
   zookeeper:
     image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/zookeeper:3.5.1
     expose:
@@ -74,7 +40,6 @@ services:
   job:
     image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/dp-heating-period-sample-job
     links:
-      - spark_master:sparkmaster
       - kafka
       - schema_registry
     expose:
@@ -85,8 +50,6 @@ services:
       - "7005"
       - "7006"
       - "8888" # Akka
-    volumes:
-      - checkpointvolume:/var/spark/checkpoints
     environment:
       SPARK_MASTER: spark://sparkmaster:7077
       KAFKA: kafka:9092
@@ -97,11 +60,3 @@ services:
       CASSANDRA_PASSWORD: ""
       RM_CHECKPOINT: /var/spark/checkpoints/tmp
       ENV: test
-
-  cassandra:
-    image: bgchops-docker-dockerv2-local.artifactoryonline.com/bgch-dp/dse-schema:4.8.5-1
-    expose:
-      - "9042"
-
-volumes:
-  checkpointvolume:

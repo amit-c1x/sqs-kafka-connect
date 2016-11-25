@@ -8,8 +8,6 @@ if [ -d "deb" ]; then
 else
     # Not in GoCD, so package the deb file ourselves
     # First construct deb file for installing job
-    export PATH="./src/it/docker/package-commands:${PATH}"
-
     ./package/package.sh 1
 
     DEB=$(find target -name '*.deb' -print -quit)

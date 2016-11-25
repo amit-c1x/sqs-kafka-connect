@@ -32,7 +32,7 @@ function bounce_job {
 }
 
 function docker_up {
-    run up -d spark_master spark_worker kafka zookeeper schema_registry kafka_manager
+    run up -d kafka zookeeper schema_registry kafka_manager
     sleep 3
     bounce_job
     echo "NOTE: Spark jobs can only be submitted with spark-submit run _inside_ the container."

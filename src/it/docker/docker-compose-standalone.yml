@@ -1,28 +1,5 @@
-# Overrides this port configuration so
-# the Spark/Zookeeper/Kafka cluster can
-# be run standalone.
-
-# NOTE: Spark Master isn't port forwarded because of Akka networking problems.
-# See https://issues.apache.org/jira/browse/SPARK-4389
-
 version: "2"
 services:
-  spark_master:
-    ports:
-      - "8080:8080" # Web UI
-
-  spark_worker:
-    ports:
-      - "4040:4040" # Web UI
-      - "0:7001"
-      - "0:7002"
-      - "0:7003"
-      - "0:7004"
-      - "0:7005"
-      - "0:7006"
-      - "0:7080"
-      - "0:7081"
-
   zookeeper:
     ports:
       - "2181:2181"
