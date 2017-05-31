@@ -24,7 +24,7 @@ import scala.util.Try
 
 case class Conf(queueName: Option[String] = None,
                 topicName: Option[String] = None,
-                awsRegion: String = "eu-west-1",
+                awsRegion: Option[String] = Option("eu-west-1"),
                 awsKey: Option[String] = None,
                 awsSecret: Option[String] = None) {
   def toMap: Map[String, String] = {
@@ -34,6 +34,7 @@ case class Conf(queueName: Option[String] = None,
       .updated(DestinationKafkaTopic, topicName)
       .updated(AwsKey, awsKey)
       .updated(AwsSecret, awsSecret)
+      .updated(AwsRegion, awsRegion)
       .collect { case (k, Some(v)) => (k, v) }
   }
 }
@@ -65,11 +66,12 @@ object Conf {
     if (topicName == null || topicName.isEmpty)
       throw new ConnectException("Configuration must include 'topicName' setting")
 
-    val conf = Conf(queueName = queueName, topicName = topicName, awsKey = awsKey, awsSecret = awsSecret)
-    awsRegion match {
-      case Some(region) => conf.copy(awsRegion = region)
-      case _ => conf
-    }
+    val conf = Conf(queueName = queueName, topicName = topicName, awsKey = awsKey, awsSecret = awsSecret, awsRegion = awsRegion)
+    conf
+//    awsRegion match {
+//      case Some(region) => conf.copy(awsRegion = region)
+//      case _ => conf
+//    }
   }
 }
 

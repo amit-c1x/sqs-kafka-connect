@@ -15,7 +15,7 @@ object SQSConsumer {
 
   @throws(classOf[JMSException])
   private def createSQSConsumer(conf: Conf, chain: AWSCredentialsProviderChain): MessageConsumer = {
-    val region = Regions.fromName(conf.awsRegion)
+    val region = Regions.fromName(conf.awsRegion.get)
     val connectionFactory = SQSConnectionFactory.builder
       .withRegion(Region.getRegion(region))
       .withAWSCredentialsProvider(chain)
